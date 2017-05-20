@@ -77,6 +77,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
             return View(userViewModel);
         }
 
+        [AllowAnonymous]
         public ActionResult UserLogin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -84,6 +85,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult> UserLogin(UserLoginViewModel userLoginViewModel, string returnUrl)
         {
             if (ModelState.IsValid)

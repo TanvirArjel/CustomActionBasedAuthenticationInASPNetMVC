@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
@@ -10,51 +11,17 @@ using CustomAuthenticationInASPNetMVC.Repository;
 
 namespace CustomAuthenticationInASPNetMVC.CustomAttributes
 {
+
+    
     public class AuthorizedUserAttribute : AuthorizeAttribute
     {
-
+        
         public string UserRoles { get; set; }
-        //private string _roles;
-        //public string UserRole
-        //{
-        //    get
-        //    {
-        //        return this._roles;
-        //    }
-
-        //    set
-        //    {
-        //        _roles = value;
-        //    }
-        //}
-        //protected override bool AuthorizeCore(HttpContextBase httpContext)
-        //{
-        //    var user = HttpContext.Current.Session["LoggedInUser"] as User;
-
-        //    var userName = user.UserName;
-
-        //    UserRepository _userRepository = new UserRepository();
-
-        //    return _userRepository.IsUserInRole(userName, this.UserRole);
-
-        //    if (user == null)
-        //    {
-        //        httpContext.Result = new RedirectToRouteResult(new RouteValueDictionary
-        //        (new
-        //        {
-        //            Controller = "Users",
-        //            Action = "UserLogin",
-        //            returnUrl = httpContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
-        //        }));
-        //    }
-        //}
-        //public AuthorizedUserAttribute(string roles)
-        //{
-        //    this.UserRoles = roles;
-        //}
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
+            if (SkipAuthorization(filterContext)) return;
+
             var user = HttpContext.Current.Session["LoggedInUser"] as User;
 
             if (user == null)
@@ -64,7 +31,7 @@ namespace CustomAuthenticationInASPNetMVC.CustomAttributes
                 {
                     Controller = "Users",
                     Action = "UserLogin",
-                    returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                    //returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                 }));
             }
             else
@@ -81,12 +48,20 @@ namespace CustomAuthenticationInASPNetMVC.CustomAttributes
                     {
                         Controller = "Users",
                         Action = "UserLogin",
-                        returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                        //returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                     }));
                 }
             }
-
-
         }
+
+
+        private static bool SkipAuthorization(AuthorizationContext filterContext)
+        {
+            Contract.Assert(filterContext != null);
+
+            return filterContext.ActionDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any()
+                   || filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(typeof(AllowAnonymousAttribute), true).Any();
+        }
+
     }
 }

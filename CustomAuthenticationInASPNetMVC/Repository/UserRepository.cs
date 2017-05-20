@@ -12,13 +12,16 @@ namespace CustomAuthenticationInASPNetMVC.Repository
         private readonly UserDbContext _dbContext = new UserDbContext();
         public bool IsUserInRole(string userName, string roleNames)
         {
-            var roles = roleNames.Split();
-
-            bool isUserInRole = false;
-            foreach (var role in roles)
+            bool isUserInRole = true;
+            if (roleNames != null)
             {
-               isUserInRole = _dbContext.Users.Where(x => x.UserName == userName).Any(x => x.Roles.Any(r => r.RoleName == role));
+                var roles = roleNames.Split();
+                foreach (var role in roles)
+                {
+                    isUserInRole = _dbContext.Users.Where(x => x.UserName == userName).Any(x => x.Roles.Any(r => r.RoleName == role));
+                }
             }
+            
 
             
             return isUserInRole;
