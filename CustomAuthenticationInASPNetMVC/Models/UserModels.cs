@@ -58,8 +58,11 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RoleId { get; set; }
 
+        [Required]
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
+
+        [Required]
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
@@ -79,8 +82,11 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActionCategoryId { get; set; }
 
+        [Required]
         [Display(Name = "Action Cateogy Name")]
         public string ActionCategoryName { get; set; }
+
+        [Required]
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
@@ -101,11 +107,14 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActionId { get; set; }
 
+        [Required]
         [ForeignKey("ActionCategory")]
         public int ActionCategoryId { get; set; }
 
+        [Required]
         [Display(Name = "Action Name")]
         public string ActionName { get; set; }
+        [Required]
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }

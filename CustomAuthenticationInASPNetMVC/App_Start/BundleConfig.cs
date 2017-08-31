@@ -25,6 +25,7 @@ namespace CustomAuthenticationInASPNetMVC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/font-awesome/css/font-awesome.css",
                       "~/Content/site.css"));
         }
     }

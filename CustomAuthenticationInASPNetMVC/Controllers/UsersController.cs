@@ -169,14 +169,14 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         // POST: Users/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserId,FirstName,LastName,UserName,Password,Email")] User user)
+        public async Task<ActionResult> Edit([Bind(Include = "UserId,FirstName,LastName,UserName,Email")] User user)
         {
             if (ModelState.IsValid)
             {
+                _dbContext.Entry(user).Property(x => x.Password).IsModified = false;
                 _dbContext.Entry(user).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");

@@ -12,14 +12,14 @@ using CustomAuthenticationInASPNetMVC.Models;
 
 namespace CustomAuthenticationInASPNetMVC.Controllers
 {
-    public class RolesController : System.Web.Mvc.Controller
+    public class RolesController : Controller
     {
-        private UserDbContext db = new UserDbContext();
+        private readonly UserDbContext _dbContext = new UserDbContext();
 
         // GET: Roles
         public async Task<ActionResult> Index()
         {
-            return View(await db.Roles.ToListAsync());
+            return View(await _dbContext.Roles.ToListAsync());
         }
 
         // GET: Roles/Details/5
@@ -29,7 +29,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = await db.Roles.FindAsync(id);
+            Role role = await _dbContext.Roles.FindAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -40,23 +40,42 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         // GET: Roles/Create
         public ActionResult Create()
         {
+            ViewBag.AllActionCategories = _dbContext.ActionCategories.ToList();
             return View();
         }
 
         // POST: Roles/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "RoleId,RoleName,Description")] Role role)
+        public async Task<ActionResult> Create([Bind(Include = "RoleId,RoleName,Description")] Role role, List<int> selectedActionCategories, List<int> selectedActions)
         {
             if (ModelState.IsValid)
             {
-                db.Roles.Add(role);
-                await db.SaveChangesAsync();
+                if (selectedActionCategories != null)
+                {
+                    foreach (var selectedActionCategory in selectedActionCategories)
+                    {
+                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                        role.ActionCategories.Add(actionCategory);
+                    }
+                }
+
+                if (selectedActions != null)
+                {
+                    foreach (var selectedAction in selectedActions)
+                    {
+                        ControllerAction controllerAction = _dbContext.ControllerActions.Find(selectedAction);
+                        role.ControllerActions.Add(controllerAction);
+                    }
+                }
+
+                _dbContext.Roles.Add(role);
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
+            ViewBag.AllActionCategories = _dbContext.ActionCategories.ToList();
             return View(role);
         }
 
@@ -67,27 +86,54 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = await db.Roles.FindAsync(id);
+            Role role = await _dbContext.Roles.FindAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
             }
+
+            //ViewBag.AllActions = _dbContext.ControllerActions.ToList();
+            ViewBag.AllActionCategories = _dbContext.ActionCategories.ToList();
             return View(role);
         }
 
         // POST: Roles/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "RoleId,RoleName,Description")] Role role)
+        public async Task<ActionResult> Edit([Bind(Include = "RoleId,RoleName,Description")] Role role, List<int> selectedActionCategories, List<int> selectedActions)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(role).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+
+                var roleToBeUpdated = _dbContext.Roles.Find(role.RoleId);
+                roleToBeUpdated.RoleName = role.RoleName;
+                roleToBeUpdated.Description = role.Description;
+                roleToBeUpdated.ActionCategories.Clear();
+                roleToBeUpdated.ControllerActions.Clear();
+
+                if (selectedActionCategories != null)
+                {
+                    foreach (var selectedActionCategory in selectedActionCategories)
+                    {
+                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                        roleToBeUpdated.ActionCategories.Add(actionCategory);
+                    }
+                }
+
+                if (selectedActions != null)
+                {
+                    foreach (var selectedAction in selectedActions)
+                    {
+                        ControllerAction action = _dbContext.ControllerActions.Find(selectedAction);
+                        roleToBeUpdated.ControllerActions.Add(action);
+                    }
+                }
+                _dbContext.Entry(roleToBeUpdated).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            ViewBag.AllActionCategories = _dbContext.ActionCategories.ToList();
             return View(role);
         }
 
@@ -98,7 +144,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = await db.Roles.FindAsync(id);
+            Role role = await _dbContext.Roles.FindAsync(id);
             if (role == null)
             {
                 return HttpNotFound();
@@ -111,9 +157,9 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Role role = await db.Roles.FindAsync(id);
-            db.Roles.Remove(role);
-            await db.SaveChangesAsync();
+            Role role = await _dbContext.Roles.FindAsync(id);
+            _dbContext.Roles.Remove(role);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +167,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _dbContext.Dispose();
             }
             base.Dispose(disposing);
         }
