@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<br/>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span style="font-size: 25px">Security Section</span>
+        <a class="btn btn-success pull-right" href="@Url.Action("UpdateControllerNamesAndActions")">Update Security</a>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Users
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href="@Url.Action("Index","Users")" class="btn btn-primary">User List</a>
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Roles
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href="@Url.Action("Index","Roles")" class="btn btn-primary">Role List</a>
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Action Category
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href="@Url.Action("Index","ActionCategories")" class="btn btn-primary">Action Category List</a>
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Actions
+                    </div>
+                    <div class="panel-body text-center">
+                        <a href="@Url.Action("Index","Actions")" class="btn btn-primary">Action List</a>
+                    </div>
+                    <div class="panel-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer"></div>
+</div>
+

@@ -1,0 +1,42 @@
+﻿@model CustomAuthenticationInASPNetMVC.Models.ControllerAction
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SAction</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionCategory.ActionCategoryName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionCategory.ActionCategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ActionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

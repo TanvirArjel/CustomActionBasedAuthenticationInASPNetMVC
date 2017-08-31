@@ -8,7 +8,7 @@ namespace CustomAuthenticationInASPNetMVC
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new AuthorizedUserAttribute());
+            //filters.Add(new AuthorizedUserAttribute());
             filters.Add(new HandleErrorAttribute());
             
         }

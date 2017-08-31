@@ -12,7 +12,7 @@ using CustomAuthenticationInASPNetMVC.Models;
 
 namespace CustomAuthenticationInASPNetMVC.Controllers
 {
-    public class RolesController : Controller
+    public class RolesController : System.Web.Mvc.Controller
     {
         private UserDbContext db = new UserDbContext();
 

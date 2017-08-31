@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -170,8 +171,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="CommonCode\GetAllControllersAndActionsName.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\ActionsController.cs" />
+    <Compile Include="Controllers\ActionCategoriesController.cs" />
+    <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="CustomAttributes\AuthorizedUserAttribute.cs" />
     <Compile Include="DataAccessLayer\UserDbContext.cs" />
@@ -185,6 +190,18 @@
     <Compile Include="Migrations\201705200448222_UserRoleAdded.cs" />
     <Compile Include="Migrations\201705200448222_UserRoleAdded.Designer.cs">
       <DependentUpon>201705200448222_UserRoleAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705280952222_sectionActionAdded.cs" />
+    <Compile Include="Migrations\201705280952222_sectionActionAdded.Designer.cs">
+      <DependentUpon>201705280952222_sectionActionAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708301720259_SecurityChanges.cs" />
+    <Compile Include="Migrations\201708301720259_SecurityChanges.Designer.cs">
+      <DependentUpon>201708301720259_SecurityChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708310220206_ActionCategoryNameChanged.cs" />
+    <Compile Include="Migrations\201708310220206_ActionCategoryNameChanged.Designer.cs">
+      <DependentUpon>201708310220206_ActionCategoryNameChanged.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\UserModels.cs" />
@@ -255,6 +272,18 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\ActionCategories\Create.cshtml" />
+    <Content Include="Views\ActionCategories\Delete.cshtml" />
+    <Content Include="Views\ActionCategories\Details.cshtml" />
+    <Content Include="Views\ActionCategories\Edit.cshtml" />
+    <Content Include="Views\ActionCategories\Index.cshtml" />
+    <Content Include="Views\Actions\Create.cshtml" />
+    <Content Include="Views\Actions\Delete.cshtml" />
+    <Content Include="Views\Actions\Details.cshtml" />
+    <Content Include="Views\Actions\Edit.cshtml" />
+    <Content Include="Views\Actions\Index.cshtml" />
+    <Content Include="Views\Security\Index.cshtml" />
+    <Content Include="Views\Security\UpdateControllerNamesAndActions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -274,6 +303,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705200448222_UserRoleAdded.resx">
       <DependentUpon>201705200448222_UserRoleAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705280952222_sectionActionAdded.resx">
+      <DependentUpon>201705280952222_sectionActionAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708301720259_SecurityChanges.resx">
+      <DependentUpon>201708301720259_SecurityChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708310220206_ActionCategoryNameChanged.resx">
+      <DependentUpon>201708310220206_ActionCategoryNameChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
