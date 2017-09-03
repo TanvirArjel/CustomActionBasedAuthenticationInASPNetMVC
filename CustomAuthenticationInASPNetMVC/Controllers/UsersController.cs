@@ -28,11 +28,14 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         // POST: Users/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        public JsonResult IsUserNameAlreadyExists(string UserName, int? UserId)
+        {
+            bool uerNameCheckingStatus = _dbContext.Users.Any(x => x.UserName == UserName && x.UserId != UserId);
+            return Json(!uerNameCheckingStatus, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UserRegistration(UserRegistrationViewModel userViewModel, List<int> selectedRoles)
+        public async Task<ActionResult> UserRegistration(UserRegistrationViewModel userViewModel, List<int> selectedRoles, List<int> selectedActionCategories,List<int> selectedActions)
         {
 
             if (ModelState.IsValid)
@@ -66,6 +69,24 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                     {
                         Role role = _dbContext.Roles.Find(selectedRole);
                         user.Roles.Add(role);
+                    }
+                }
+
+                if (selectedActionCategories != null)
+                {
+                    foreach (var selectedActionCategory in selectedActionCategories)
+                    {
+                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                        user.ActionCategories.Add(actionCategory);
+                    }
+                }
+
+                if (selectedActions != null)
+                {
+                    foreach (var selectedAction in selectedActions)
+                    {
+                        ControllerAction controllerAction = _dbContext.ControllerActions.Find(selectedAction);
+                        user.ControllerActions.Add(controllerAction);
                     }
                 }
 
@@ -165,6 +186,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.AllRoles = _dbContext.Roles.ToList();
             return View(user);
         }
 
@@ -172,12 +194,51 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "UserId,FirstName,LastName,UserName,Email")] User user)
+        public async Task<ActionResult> Edit(User user, List<int> selectedRoles, List<int> selectedActionCategories, List<int> selectedActions)
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Entry(user).Property(x => x.Password).IsModified = false;
-                _dbContext.Entry(user).State = EntityState.Modified;
+                User userToBeUpdated = _dbContext.Users.Find(user.UserId);
+                if (userToBeUpdated == null)
+                {
+                    return HttpNotFound();
+                }
+                userToBeUpdated.FirstName = user.FirstName;
+                userToBeUpdated.LastName = user.LastName;
+                userToBeUpdated.UserName = user.UserName;
+                userToBeUpdated.Email = user.Email;
+                userToBeUpdated.Roles.Clear();
+                userToBeUpdated.ActionCategories.Clear();
+                userToBeUpdated.ControllerActions.Clear();
+
+                if (selectedRoles != null)
+                {
+                    foreach (var selectedRole in selectedRoles)
+                    {
+                        Role role = _dbContext.Roles.Find(selectedRole);
+                        userToBeUpdated.Roles.Add(role);
+                    }
+                }
+
+                if (selectedActionCategories != null)
+                {
+                    foreach (var selectedActionCategory in selectedActionCategories)
+                    {
+                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                        userToBeUpdated.ActionCategories.Add(actionCategory);
+                    }
+                }
+
+                if (selectedActions != null)
+                {
+                    foreach (var selectedAction in selectedActions)
+                    {
+                        ControllerAction controllerAction = _dbContext.ControllerActions.Find(selectedAction);
+                        userToBeUpdated.ControllerActions.Add(controllerAction);
+                    }
+                }
+                _dbContext.Entry(userToBeUpdated).State = EntityState.Modified;
+                
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

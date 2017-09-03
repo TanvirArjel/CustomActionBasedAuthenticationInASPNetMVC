@@ -6,8 +6,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CustomAuthenticationInASPNetMVC.CommonCode;
 using CustomAuthenticationInASPNetMVC.Models;
-using CustomAuthenticationInASPNetMVC.Repository;
 
 namespace CustomAuthenticationInASPNetMVC.CustomAttributes
 {
@@ -31,24 +31,33 @@ namespace CustomAuthenticationInASPNetMVC.CustomAttributes
                 {
                     Controller = "Users",
                     Action = "UserLogin",
-                    //returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                    returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                 }));
             }
             else
             {
-                var userName = user.UserName;
+                var userId = user.UserId;
+                bool isUserSuperAdmin = UserAuthorization.IsUserSuperAdmin(userId);
+                if (isUserSuperAdmin)
+                {
+                    return;
+                }
+               
+                var rd = filterContext.RequestContext.RouteData;
+                string currentAction = rd.GetRequiredString("action");
+                string currentController = rd.GetRequiredString("controller");
+                string currentArea = rd.Values["area"] as string;
 
-                UserRepository _userRepository = new UserRepository();
-
-                bool isUserInRole = _userRepository.IsUserInRole(userName, UserRoles);
-                if (!isUserInRole)
+                
+                bool isUserAuthorizedAthorizedInAction = UserAuthorization.IsUserAthorizedInAction(userId, currentController, currentAction);
+                if (!isUserAuthorizedAthorizedInAction)
                 {
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
                     (new
                     {
                         Controller = "Users",
                         Action = "UserLogin",
-                        //returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
+                        returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                     }));
                 }
             }

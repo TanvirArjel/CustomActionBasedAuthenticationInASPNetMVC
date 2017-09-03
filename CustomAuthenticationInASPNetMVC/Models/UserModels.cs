@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CustomAuthenticationInASPNetMVC.Models
 {
@@ -30,6 +31,9 @@ namespace CustomAuthenticationInASPNetMVC.Models
 
         [Required]
         [Display(Name = "User Name")]
+        [StringLength(50)]
+        [Index("Ix_UserNameUnique", IsUnique = true)]
+        [Remote("IsUserNameAlreadyExists","Users", AdditionalFields = "UserId",ErrorMessage = "UserName Already Taken")]
         public string UserName { get; set; }
 
         [Required]
@@ -60,6 +64,8 @@ namespace CustomAuthenticationInASPNetMVC.Models
 
         [Required]
         [Display(Name = "Role Name")]
+        [StringLength(50)]
+        [Index("Ix_RoleNameUnique", IsUnique = true)]
         public string RoleName { get; set; }
 
         [Required]
@@ -84,6 +90,8 @@ namespace CustomAuthenticationInASPNetMVC.Models
 
         [Required]
         [Display(Name = "Action Cateogy Name")]
+        [StringLength(100)]
+        [Index("Ix_ActionCategoryNameUnique", IsUnique = true)]
         public string ActionCategoryName { get; set; }
 
         [Required]
@@ -114,6 +122,7 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [Required]
         [Display(Name = "Action Name")]
         public string ActionName { get; set; }
+
         [Required]
         public string Description { get; set; }
 

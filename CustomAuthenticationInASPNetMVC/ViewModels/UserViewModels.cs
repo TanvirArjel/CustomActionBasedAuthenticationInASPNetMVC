@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CustomAuthenticationInASPNetMVC.ViewModels
 {
@@ -18,6 +19,7 @@ namespace CustomAuthenticationInASPNetMVC.ViewModels
 
         [Required]
         [Display(Name = "User Name")]
+        [Remote("IsUserNameAlreadyExists","Users",ErrorMessage = "User Name Already Taken!")]
         public string UserName { get; set; }
 
         [Required]
@@ -27,7 +29,7 @@ namespace CustomAuthenticationInASPNetMVC.ViewModels
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]

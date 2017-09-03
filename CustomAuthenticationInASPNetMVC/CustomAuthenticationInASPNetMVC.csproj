@@ -172,6 +172,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="CommonCode\GetAllControllersAndActionsName.cs" />
+    <Compile Include="CommonCode\UserAuthorization.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ActionsController.cs" />
@@ -207,10 +208,13 @@
     <Compile Include="Migrations\201708311037074_RequiedAttrAdded.Designer.cs">
       <DependentUpon>201708311037074_RequiedAttrAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709031203247_UniquenessAdded.cs" />
+    <Compile Include="Migrations\201709031203247_UniquenessAdded.Designer.cs">
+      <DependentUpon>201709031203247_UniquenessAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\UserRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
@@ -273,6 +277,7 @@
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\CustomJs\security.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -327,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Repository\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -355,6 +361,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708311037074_RequiedAttrAdded.resx">
       <DependentUpon>201708311037074_RequiedAttrAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709031203247_UniquenessAdded.resx">
+      <DependentUpon>201709031203247_UniquenessAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

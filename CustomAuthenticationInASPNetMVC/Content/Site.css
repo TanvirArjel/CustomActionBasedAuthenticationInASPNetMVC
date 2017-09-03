@@ -38,3 +38,7 @@ hr {
     border: 0;
     border-top: 1px solid #000;
 }
+
+.input-group {
+    margin-bottom: 10px;
+}

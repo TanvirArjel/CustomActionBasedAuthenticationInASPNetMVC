@@ -14,7 +14,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
 {
     public class ActionsController : Controller
     {
-        private UserDbContext db = new UserDbContext();
+        private readonly UserDbContext db = new UserDbContext();
 
         // GET: SActions
         public async Task<ActionResult> Index()

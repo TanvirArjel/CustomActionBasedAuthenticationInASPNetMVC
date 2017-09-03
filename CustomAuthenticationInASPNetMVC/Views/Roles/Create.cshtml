@@ -33,10 +33,11 @@
                     </div>
                 </div>
                 <br/>
+                
+                <div class="btn btn-default"><strong>Select Permissions for this role <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></div>
+                <br/>
+                <br/>
                 <div class="form-group">
-                    <span class="btn btn-default"><strong>Select Permissions for this role <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></span>
-                    <br/>
-                    <br/>
 
                     <div class="form-control" style="height: auto">
                         @{
@@ -96,105 +97,6 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-    <script>
-        $(document).ready(function () {
-
-            $("span.action-cateogry").on("click", function () {
-                if ($(this).children("input:checkbox").prop("checked")) {
-
-                    $(this).removeClass("btn-success").addClass("btn-default");
-                    $(this).siblings().removeClass("btn-primary").addClass("btn-default");
-                    $(this).children("input:checkbox").prop("checked", false);
-                    $(this).siblings().children("input[name = 'selectedActions']").prop("checked", false);
-                } else
-                {
-                    $(this).removeClass("btn-default").addClass("btn-success");
-                    $(this).siblings().removeClass("btn-default").addClass("btn-primary");
-                    $(this).children("input:checkbox").prop("checked", true);
-                    $(this).siblings().children("input[name = 'selectedActions']").prop("checked", true);
-                }
-                
-            });
-
-
-            $("span.controller-action").on("click", function () {
-                if ($(this).children("input:checkbox").prop("checked")) {
-                    $(this).removeClass("btn-primary").addClass("btn-default");
-                    $(this).children("input:checkbox").prop("checked", false);
-                    var totalChecked = $(this).siblings().children("input[name = 'selectedActions']:checkbox:checked").length;
-                    if (totalChecked <= 0) {
-                        $(this).siblings("span.action-cateogry").removeClass("btn-success").addClass("btn-default");
-                        $(this).siblings().children("input[name = 'selectedActionCategories']").prop("checked", false);
-                    }
-                } else {
-                    $(this).removeClass("btn-default").addClass("btn-primary");
-                    $(this).siblings("span.action-cateogry").removeClass("btn-default").addClass("btn-success");
-                    $(this).children("input:checkbox").prop("checked", true);
-                    $(this).siblings().children("input[name = 'selectedActionCategories']").prop("checked", true);
-                }
-
-            });
-
-
-
-            $("input[name = 'selectedActionCategories']").on("change", function () {
-                if ($(this).prop("checked")) {
-                    $(this).prop("checked", false);
-                    $(this).parent().removeClass("btn-success").addClass("btn-default");
-
-                    $(this).parent().siblings().removeClass("btn-primary").addClass("btn-default");
-                    $(this).parent().siblings().children("input[name = 'selectedActions']").prop("checked", false);
-                } else {
-                    $(this).prop("checked", true);
-                    $(this).parent().removeClass("btn-default").addClass("btn-success");
-
-                    $(this).parent().siblings().removeClass("btn-default").addClass("btn-primary");
-                    $(this).parent().siblings().children("input[name = 'selectedActions']").prop("checked", true);
-                }
-            });
-
-            $("input[name = 'selectedActions']").on("change", function () {
-                if ($(this).prop("checked")) {
-
-                    $(this).prop("checked", false);
-                    $(this).parent().removeClass("btn-primary").addClass("btn-default");
-
-                    var totalChecked = $(this).parent().siblings().children("input[name = 'selectedActions']:checkbox:checked").length;
-                    if (totalChecked <= 0) {
-                        $(this).parent().siblings().children("input[name = 'selectedActionCategories']").prop("checked", false);
-                        $(this).parent().siblings("span.action-cateogry").removeClass("btn-success").addClass("btn-default");
-                    }
-                } else {
-                    $(this).prop("checked", true);
-                    $(this).parent().removeClass("btn-default").addClass("btn-primary");
-
-                    $(this).parent().siblings().children("input[name = 'selectedActionCategories']").prop("checked", true);
-                    $(this).parent().siblings("span.action-cateogry").removeClass("btn-default").addClass("btn-success");
-                }
-            });
-
-
-
-            //$("input[name = 'selectedActionCategories']").on("change", function() {
-            //    if ($(this).prop("checked")) {
-            //        $(this).siblings("input[name = 'selectedActions']").prop("checked", true);
-            //    } else {
-            //        $(this).siblings("input[name = 'selectedActions']").prop("checked", false);
-            //    }
-            //});
-
-            //$("input[name = 'selectedActions']").on("change", function() {
-            //    if ($(this).prop("checked")) {
-            //        $(this).siblings("input[name = 'selectedActionCategories']").prop("checked", true);
-            //    } else {
-            //        var totalChecked = $(this).siblings("input[name = 'selectedActions']:checkbox:checked").length;
-            //        if (totalChecked <= 0) {
-            //            $(this).siblings("input[name = 'selectedActionCategories']").prop("checked", false);
-            //        }
-            //    }
-            //});
-        });
-        
-    </script>
+   <script src="~/Scripts/CustomJs/security.js"></script>
+    
 }
