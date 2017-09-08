@@ -11,7 +11,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
 {
     public class SecurityController : Controller
     {
-        private UserDbContext _dbContext = new UserDbContext();
+        private readonly UserDbContext _dbContext = new UserDbContext();
 
         public ActionResult Index()
         {
@@ -20,19 +20,35 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
 
         public ActionResult UpdateControllerNamesAndActions()
         {
-            var controllerNames = GetAllControllersAndActionsName.GetControllerNames();
-            HashSet<string> controllerNamesHs = new HashSet<string>(controllerNames);
+            List<string> newControllerNames = GetAllControllersAndActionsName.GetControllerNames();
+            HashSet<string> newControllerNamesHs = new HashSet<string>(newControllerNames);
 
-            foreach (string controllerName in controllerNamesHs)
+            List<string> existingControllerNames = _dbContext.ActionCategories.Select(x => x.ActionCategoryName).ToList();
+            HashSet<string> existingControllerNamesHs = new HashSet<string>(existingControllerNames);
+
+            List<string> controllerNamesToBeDeleted = existingControllerNamesHs.Except(newControllerNamesHs).ToList();
+
+            foreach (string controllerName in controllerNamesToBeDeleted)
+            {
+                ActionCategory controllerToBeDeleted = _dbContext.ActionCategories.FirstOrDefault(x => x.ActionCategoryName == controllerName);
+                if (controllerToBeDeleted == null)
+                {
+                    continue;
+                }
+                _dbContext.ActionCategories.Remove(controllerToBeDeleted);
+            }
+
+
+            foreach (string controllerName in newControllerNamesHs)
             {
                 
-                ActionCategory exActionCategory = _dbContext.ActionCategories.FirstOrDefault(x => x.ActionCategoryName == controllerName);
+                ActionCategory existingActionCategory = _dbContext.ActionCategories.FirstOrDefault(x => x.ActionCategoryName == controllerName);
 
-                List<string> actionNames = GetAllControllersAndActionsName.ActionNames(controllerName);
-                HashSet<string> actionNamesHs = new HashSet<string>(actionNames);
+                List<string> newActionNames = GetAllControllersAndActionsName.ActionNames(controllerName);
+                HashSet<string> newActionNamesHs = new HashSet<string>(newActionNames);
 
                 
-                if (exActionCategory == null)
+                if (existingActionCategory == null)
                 {
                     ActionCategory actionCategory = new ActionCategory
                     {
@@ -43,7 +59,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                     _dbContext.ActionCategories.Add(actionCategory);
                     _dbContext.SaveChanges();
 
-                    foreach (string actionName in actionNamesHs)
+                    foreach (string actionName in newActionNamesHs)
                     {
                             ControllerAction controllerAction = new ControllerAction()
                             {
@@ -58,19 +74,32 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 }
                 else
                 {
-                    foreach (string actionName in actionNamesHs)
+                    List<string> existingtActionNames = existingActionCategory.ControllerActions.Select(x => x.ActionName).ToList();
+                    HashSet<string> existingtActionNamesHs = new HashSet<string>(existingtActionNames);
+
+                    List<string> actionNamesToBeDeleted = existingtActionNamesHs.Except(newActionNamesHs).ToList();
+
+                    foreach (string actionName in actionNamesToBeDeleted)
                     {
-                        ControllerAction exControllerAction = _dbContext.ControllerActions.FirstOrDefault(x => x.ActionCategoryId == exActionCategory.ActionCategoryId && x.ActionName == actionName);
-                        if (exControllerAction == null)
+                        ControllerAction controlleActionToBeDeleted = _dbContext.ControllerActions.FirstOrDefault(x => x.ActionCategoryId == existingActionCategory.ActionCategoryId && x.ActionName == actionName);
+                        if (controlleActionToBeDeleted == null)
                         {
-                            ControllerAction controllerAction = new ControllerAction()
-                            {
-                                ActionCategoryId = exActionCategory.ActionCategoryId,
-                                ActionName = actionName,
-                                Description = "This is an action of " + controllerName + " Controller"
-                            };
-                            _dbContext.ControllerActions.Add(controllerAction);
+                            continue;
                         }
+                        _dbContext.ControllerActions.Remove(controlleActionToBeDeleted);
+                    }
+
+                    List<string> actionNamesToBeAdded = newActionNamesHs.Except(existingtActionNamesHs).ToList();
+
+                    foreach (string actionName in actionNamesToBeAdded)
+                    {
+                        ControllerAction controllerAction = new ControllerAction()
+                        {
+                            ActionCategoryId = existingActionCategory.ActionCategoryId,
+                            ActionName = actionName,
+                            Description = "This is an action of " + controllerName + " Controller"
+                        };
+                        _dbContext.ControllerActions.Add(controllerAction);
                     }
                 }
                 

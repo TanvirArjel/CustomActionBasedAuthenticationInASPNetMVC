@@ -52,22 +52,26 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (selectedActionCategories != null)
+                if (!String.Equals(role.RoleName,"SuperAdmin",StringComparison.CurrentCultureIgnoreCase))
                 {
-                    foreach (var selectedActionCategory in selectedActionCategories)
+                    if (selectedActionCategories != null)
                     {
-                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
-                        role.ActionCategories.Add(actionCategory);
+                        foreach (var selectedActionCategory in selectedActionCategories)
+                        {
+                            ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                            role.ActionCategories.Add(actionCategory);
+                        }
                     }
-                }
 
-                if (selectedActions != null)
-                {
-                    foreach (var selectedAction in selectedActions)
+                    if (selectedActions != null)
                     {
-                        ControllerAction controllerAction = _dbContext.ControllerActions.Find(selectedAction);
-                        role.ControllerActions.Add(controllerAction);
+                        foreach (var selectedAction in selectedActions)
+                        {
+                            ControllerAction controllerAction = _dbContext.ControllerActions.Find(selectedAction);
+                            role.ControllerActions.Add(controllerAction);
+                        }
                     }
+
                 }
 
                 _dbContext.Roles.Add(role);
@@ -112,23 +116,27 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 roleToBeUpdated.ActionCategories.Clear();
                 roleToBeUpdated.ControllerActions.Clear();
 
-                if (selectedActionCategories != null)
+                if (!String.Equals(role.RoleName,"SuperAdmin",StringComparison.CurrentCultureIgnoreCase))
                 {
-                    foreach (var selectedActionCategory in selectedActionCategories)
+                    if (selectedActionCategories != null)
                     {
-                        ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
-                        roleToBeUpdated.ActionCategories.Add(actionCategory);
+                        foreach (var selectedActionCategory in selectedActionCategories)
+                        {
+                            ActionCategory actionCategory = _dbContext.ActionCategories.Find(selectedActionCategory);
+                            roleToBeUpdated.ActionCategories.Add(actionCategory);
+                        }
+                    }
+
+                    if (selectedActions != null)
+                    {
+                        foreach (var selectedAction in selectedActions)
+                        {
+                            ControllerAction action = _dbContext.ControllerActions.Find(selectedAction);
+                            roleToBeUpdated.ControllerActions.Add(action);
+                        }
                     }
                 }
 
-                if (selectedActions != null)
-                {
-                    foreach (var selectedAction in selectedActions)
-                    {
-                        ControllerAction action = _dbContext.ControllerActions.Find(selectedAction);
-                        roleToBeUpdated.ControllerActions.Add(action);
-                    }
-                }
                 _dbContext.Entry(roleToBeUpdated).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
                 return RedirectToAction("Index");
