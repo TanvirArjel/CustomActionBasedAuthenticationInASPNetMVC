@@ -20,7 +20,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
 
         public ActionResult UpdateControllerNamesAndActions()
         {
-            List<string> newControllerNames = GetAllControllersAndActionsName.GetControllerNames();
+            List<string> newControllerNames = GetAllControllerAndActionNames.GetControllerNames2();
             HashSet<string> newControllerNamesHs = new HashSet<string>(newControllerNames);
 
             List<string> existingControllerNames = _dbContext.ActionCategories.Select(x => x.ActionCategoryName).ToList();
@@ -44,7 +44,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 
                 ActionCategory existingActionCategory = _dbContext.ActionCategories.FirstOrDefault(x => x.ActionCategoryName == controllerName);
 
-                List<string> newActionNames = GetAllControllersAndActionsName.ActionNames(controllerName);
+                List<string> newActionNames = GetAllControllerAndActionNames.GetActionNamesByController2(controllerName);
                 HashSet<string> newActionNamesHs = new HashSet<string>(newActionNames);
 
                 
@@ -105,7 +105,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 
             }
 
-            _dbContext.SaveChanges();
+           // _dbContext.SaveChanges();
 
             return View();
         }

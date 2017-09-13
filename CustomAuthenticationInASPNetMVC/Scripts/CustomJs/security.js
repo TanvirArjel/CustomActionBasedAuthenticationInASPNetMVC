@@ -16,7 +16,7 @@ $(document).ready(function () {
             $(this).children("input[name='selectedRoles']").prop("checked", false);
             $(this).removeClass("btn-info").addClass("btn-default");
 
-            $(this).parent().parent().siblings().removeClass("hidden");
+           $(this).parent().parent().siblings().removeClass("hidden");
 
             $(this).parent().siblings().children().find("input[name = 'selectedActionCategories']").prop("checked", false);
             $(this).parent().siblings().find("span.action-cateogry").removeClass("btn-success").addClass("btn-default");
@@ -33,10 +33,10 @@ $(document).ready(function () {
             var roleName = str.replace(/\s/g, '').substr(5);
             if (roleName.toString() === "SuperAdmin") {
                 $(this).parent().parent().siblings().addClass("hidden");
+
                 $(this).parent().parent().siblings().children().find("input").prop("checked", false);
                 $(this).parent().parent().siblings().children().find("span").removeClass("btn-primary btn-success btn-info").addClass("btn-default");
             }
-
 
             $(this).parent().siblings().children().find("input[name = 'selectedActionCategories']").prop("checked", true);
             $(this).parent().siblings().find("span.action-cateogry").removeClass("btn-default").addClass("btn-success");
@@ -53,6 +53,10 @@ $(document).ready(function () {
             $(this).prop("checked", false);
             $(this).parent().removeClass("btn-info").addClass("btn-default");
 
+
+            $(this).parent().parent().parent().siblings().removeClass("hidden");
+
+
             $(this).parent().parent().siblings().children().find("input[name = 'selectedActionCategories']").prop('checked', false);
             $(this).parent().parent().siblings().children().find("span.action-cateogry").removeClass("btn-success").addClass("btn-default");
 
@@ -62,6 +66,14 @@ $(document).ready(function () {
         } else {
             $(this).prop("checked", true);
             $(this).parent().removeClass("btn-default").addClass("btn-info");
+
+            var str = $(this).parent().text();
+            var roleName = str.replace(/\s/g, '').substr(5);
+            if (roleName.toString() === "SuperAdmin") {
+                $(this).parent().parent().parent().siblings().addClass("hidden");
+                $(this).parent().parent().siblings().children().find("input").prop("checked", false);
+                $(this).parent().parent().siblings().children().find("span").removeClass("btn-primary btn-success btn-info").addClass("btn-default");
+            }
 
             $(this).parent().parent().siblings().children().find("input[name = 'selectedActionCategories']").prop('checked', true);
             $(this).parent().parent().siblings().children().find("span.action-cateogry").removeClass("btn-default").addClass("btn-success");

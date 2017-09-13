@@ -50,7 +50,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ActionId,SectionId,ActionName,Description")] ControllerAction controllerAction)
+        public async Task<ActionResult> Create([Bind(Include = "ActionCategoryId,ActionName,Description")] ControllerAction controllerAction)
         {
             if (ModelState.IsValid)
             {

@@ -44,11 +44,10 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         // POST: Sections/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "SectionId,SectionName,Description")] ActionCategory actionCategory)
+        public async Task<ActionResult> Create([Bind(Include = "ActionCategoryName,Description")] ActionCategory actionCategory)
         {
             if (ModelState.IsValid)
             {

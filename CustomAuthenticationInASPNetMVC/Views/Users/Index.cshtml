@@ -7,8 +7,10 @@
 <br/>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <span style="font-size: 25px;">List | Users </span>
-        <span class="pull-right">@Html.ActionLink("Create New", "UserRegistration")</span>
+        
+        <span style="font-size: 25px; font-weight: bold">List | Users </span>
+        <a class="btn btn-primary pull-right" href="@Url.Action("UserRegistration")">Create New</a>
+        
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
