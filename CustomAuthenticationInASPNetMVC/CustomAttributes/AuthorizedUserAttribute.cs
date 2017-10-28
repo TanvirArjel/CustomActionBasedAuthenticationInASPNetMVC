@@ -29,7 +29,7 @@ namespace CustomAuthenticationInASPNetMVC.CustomAttributes
                 filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
                 (new
                 {
-                    Controller = "Users",
+                    Controller = "User",
                     Action = "UserLogin",
                     returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                 }));
@@ -55,7 +55,7 @@ namespace CustomAuthenticationInASPNetMVC.CustomAttributes
                     filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
                     (new
                     {
-                        Controller = "Users",
+                        Controller = "User",
                         Action = "UserLogin",
                         returnUrl = filterContext.HttpContext.Request.Url.GetComponents(UriComponents.PathAndQuery, UriFormat.SafeUnescaped)
                     }));

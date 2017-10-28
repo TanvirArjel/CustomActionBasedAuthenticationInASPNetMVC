@@ -34,12 +34,12 @@
                         if (loggedInuser != null)
                         {
                             <li><a href="#">Welcome! @loggedInuser.UserName</a></li>
-                            <li>@Html.ActionLink("Log Out", "LogOut", "Users")</li>
+                            <li>@Html.ActionLink("Log Out", "LogOut", "User")</li>
                         }
                         else
                         {
-                            <li>@Html.ActionLink("User Registration", "UserRegistration", "Users")</li>
-                            <li>@Html.ActionLink("User Login", "UserLogin", "Users")</li>
+                            <li>@Html.ActionLink("User Registration", "UserRegistration", "User")</li>
+                            <li>@Html.ActionLink("User Login", "UserLogin", "User")</li>
                         }
 
                     }

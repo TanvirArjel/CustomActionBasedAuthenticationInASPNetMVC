@@ -1,0 +1,102 @@
+﻿@using CustomAuthenticationInASPNetMVC.Models
+@model Role
+
+@{
+    ViewBag.Title = "Create";
+}
+<br/>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span style="font-size: 25px">Create Role</span>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm()) 
+        {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.RoleName, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br/>
+                
+                <div class="btn btn-default"><strong>Select Permissions for this role <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></div>
+                <br/>
+                <br/>
+                <div class="form-group">
+
+                    <div class="form-control" style="height: auto">
+                        @{
+
+                            List<ActionCategory> actionCategories = ViewBag.AllActionCategories;
+
+                            foreach (var actionCategory in actionCategories)
+                            {
+                                <div style="border: 1px solid #000; padding: 10px">
+                                    <span class="action-cateogry btn btn-default">
+                                        <input type="checkbox" name="selectedActionCategories" value="@actionCategory.ActionCategoryId"/>
+                                        <strong>@actionCategory.ActionCategoryName</strong>
+                                    </span>
+                                    
+                                    <br/>
+                                    <hr/>
+                                    @{
+                                        var count = Enumerable.Count(actionCategory.ControllerActions);
+                                        foreach (var controllerAction in actionCategory.ControllerActions)
+                                        {
+                                            <span class="controller-action btn btn-default">
+                                                <input type="checkbox" name="selectedActions" value="@controllerAction.ActionId"/>
+                                                @controllerAction.ActionName
+                                            </span>
+                                            
+                                            if (--count > 0)
+                                            {
+                                                @:|
+                                            }
+                                        }
+                                    }
+
+                                </div>
+
+                                <br />
+                                <br />
+
+                            }
+                        }
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                        @Html.ActionLink("Back to List", "Index",null,new {@class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+   <script src="~/Scripts/CustomJs/security.js"></script>
+    
+}

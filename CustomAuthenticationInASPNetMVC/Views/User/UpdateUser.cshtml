@@ -1,0 +1,165 @@
+﻿@using CustomAuthenticationInASPNetMVC.Models
+@model CustomAuthenticationInASPNetMVC.Models.User
+
+@{
+    ViewBag.Title = "Edit";
+}
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3> Update | User</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.UserId)
+                @Html.HiddenFor(model => model.Password)
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        <span class="text-danger">@ViewBag.UserNameExistsError</span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "input-group-addon" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <span class="btn btn-default"><strong>Select Role Wise Permissions for this user <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></span>
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        @{
+
+                            List<Role> roles = ViewBag.AllRoles;
+                            foreach (var role in roles)
+                            {
+                                var isRoleChecked = Model.Roles.Any(r => r.RoleId == role.RoleId);
+                                var buttonClassForRole = "btn-default";
+                                if (isRoleChecked)
+                                {
+                                    buttonClassForRole = "btn-info";
+                                }
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <span class="role btn @buttonClassForRole">
+                                            <strong>Role:</strong>
+                                            <input type="checkbox" name="selectedRoles" value="@role.RoleId"
+                                                   @if (isRoleChecked)
+                                                   {
+                                                       <text> Checked</text>}/>
+                                            @role.RoleName
+                                        </span>
+
+                                    </div>
+                                    <div class="panel-body">
+
+                                        @{
+
+                                            foreach (var actionCategory in role.ActionCategories)
+                                            {
+                                                var isActionCategoryChecked = Model.ActionCategories.Any(r => r.ActionCategoryId == actionCategory.ActionCategoryId);
+                                                var buttonClassForActionCategory = "btn-default";
+                                                if (isActionCategoryChecked)
+                                                {
+                                                    buttonClassForActionCategory = "btn-success";
+                                                }
+                                                <div style="border: 1px solid #000; padding: 10px">
+                                                    <span class="action-cateogry btn @buttonClassForActionCategory">
+                                                        <input type="checkbox" name="selectedActionCategories" value="@actionCategory.ActionCategoryId" @if (isActionCategoryChecked) { <text> Checked</text>} />
+                                                        <strong>@actionCategory.ActionCategoryName</strong>
+                                                    </span>
+
+                                                    <br />
+                                                    <hr />
+                                                    @{
+                                                        var count = Enumerable.Count(actionCategory.ControllerActions);
+                                                        foreach (var controllerAction in actionCategory.ControllerActions)
+                                                        {
+                                                            var isControllerActionChecked = Model.ControllerActions.Any(r => r.ActionId == controllerAction.ActionId);
+                                                            var buttonClassForControllerAction = "btn-default";
+                                                            if (isControllerActionChecked)
+                                                            {
+                                                                buttonClassForControllerAction = "btn-primary";
+                                                            }
+                                                            <span class="controller-action btn @buttonClassForControllerAction">
+                                                                <input type="checkbox" name="selectedActions" value="@controllerAction.ActionId" @if (isControllerActionChecked) { <text> Checked</text>} />
+                                                                @controllerAction.ActionName
+                                                            </span>
+
+                                                            if (--count > 0)
+                                                            {
+                                                                @:|
+                                                            }
+                                                        }
+                                                    }
+
+                                                </div>
+
+                                                <br />
+                                                <br />
+
+                                                        }
+                                        }
+
+
+                                    </div>
+                                </div>
+
+
+                                                        }
+                        }
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-sucesss" /> 
+                        @Html.ActionLink("Back to List", "UserList", null, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            </div>
+                                                        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src="~/Scripts/CustomJs/security.js"></script>
+}
