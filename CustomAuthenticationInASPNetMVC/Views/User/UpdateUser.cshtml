@@ -2,12 +2,12 @@
 @model CustomAuthenticationInASPNetMVC.Models.User
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit User";
 }
 <br />
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3> Update | User</h3>
+    <div class="panel-heading text-center">
+        <h3><strong>Update User</strong></h3>
     </div>
     <div class="panel-body">
         @using (Html.BeginForm())
@@ -69,7 +69,7 @@
                                 {
                                     buttonClassForRole = "btn-info";
                                 }
-                                <div class="panel panel-primary">
+                                <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <span class="role btn @buttonClassForRole">
                                             <strong>Role:</strong>
@@ -84,51 +84,63 @@
                                     <div class="panel-body">
 
                                         @{
-
-                                            foreach (var actionCategory in role.ActionCategories)
+                                            if (role.RoleName.Equals("SuperAdmin", StringComparison.CurrentCultureIgnoreCase))
                                             {
-                                                var isActionCategoryChecked = Model.ActionCategories.Any(r => r.ActionCategoryId == actionCategory.ActionCategoryId);
-                                                var buttonClassForActionCategory = "btn-default";
-                                                if (isActionCategoryChecked)
+                                                <strong>He/She has all rights and permissions in this application</strong>
+                                            }
+                                            else
+                                            {
+                                                if (role.ActionCategories.Any())
                                                 {
-                                                    buttonClassForActionCategory = "btn-success";
-                                                }
-                                                <div style="border: 1px solid #000; padding: 10px">
-                                                    <span class="action-cateogry btn @buttonClassForActionCategory">
-                                                        <input type="checkbox" name="selectedActionCategories" value="@actionCategory.ActionCategoryId" @if (isActionCategoryChecked) { <text> Checked</text>} />
-                                                        <strong>@actionCategory.ActionCategoryName</strong>
-                                                    </span>
-
-                                                    <br />
-                                                    <hr />
-                                                    @{
-                                                        var count = Enumerable.Count(actionCategory.ControllerActions);
-                                                        foreach (var controllerAction in actionCategory.ControllerActions)
+                                                    foreach (var actionCategory in role.ActionCategories)
+                                                    {
+                                                        var isActionCategoryChecked = Model.ActionCategories.Any(r => r.ActionCategoryId == actionCategory.ActionCategoryId);
+                                                        var buttonClassForActionCategory = "btn-default";
+                                                        if (isActionCategoryChecked)
                                                         {
-                                                            var isControllerActionChecked = Model.ControllerActions.Any(r => r.ActionId == controllerAction.ActionId);
-                                                            var buttonClassForControllerAction = "btn-default";
-                                                            if (isControllerActionChecked)
-                                                            {
-                                                                buttonClassForControllerAction = "btn-primary";
-                                                            }
-                                                            <span class="controller-action btn @buttonClassForControllerAction">
-                                                                <input type="checkbox" name="selectedActions" value="@controllerAction.ActionId" @if (isControllerActionChecked) { <text> Checked</text>} />
-                                                                @controllerAction.ActionName
+                                                            buttonClassForActionCategory = "btn-success";
+                                                        }
+                                                        <div style="border: 1px solid #000; padding: 10px">
+                                                            <span class="action-cateogry btn @buttonClassForActionCategory">
+                                                                <input type="checkbox" name="selectedActionCategories" value="@actionCategory.ActionCategoryId" @if (isActionCategoryChecked) { <text> Checked</text>} />
+                                                                <strong>@actionCategory.ActionCategoryName</strong>
                                                             </span>
 
-                                                            if (--count > 0)
-                                                            {
-                                                                @:|
+                                                            <hr />
+                                                            @{
+                                                               
+                                                                foreach (var controllerAction in actionCategory.ControllerActions)
+                                                                {
+                                                                    var isControllerActionChecked = Model.ControllerActions.Any(r => r.ActionId == controllerAction.ActionId);
+                                                                    var buttonClassForControllerAction = "btn-default";
+                                                                    if (isControllerActionChecked)
+                                                                    {
+                                                                        buttonClassForControllerAction = "btn-primary";
+                                                                    }
+                                                                    <span class="controller-action btn @buttonClassForControllerAction">
+                                                                        <input type="checkbox" name="selectedActions" value="@controllerAction.ActionId" @if (isControllerActionChecked) { <text> Checked</text>} />
+                                                                        @controllerAction.ActionName
+                                                                    </span>
+
+                                                                    
+                                                                }
                                                             }
-                                                        }
-                                                    }
 
-                                                </div>
+                                                        </div>
 
-                                                <br />
-                                                <br />
+                                                        <br />
+                                                       
 
-                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <strong>No permission assigned to this role yet!</strong>
+                                                                    }
+
+                                                                }
+
+
                                         }
 
 
@@ -148,11 +160,11 @@
 
 
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Save" class="btn btn-sucesss" /> 
+                <div class="text-center">
+                    
+                        <input type="submit" value="Save" class="btn btn-success" /> 
                         @Html.ActionLink("Back to List", "UserList", null, new { @class = "btn btn-primary" })
-                    </div>
+                    
                 </div>
             </div>
                                                         }

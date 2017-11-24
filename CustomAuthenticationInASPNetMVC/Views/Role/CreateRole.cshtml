@@ -6,8 +6,8 @@
 }
 <br/>
 <div class="panel panel-primary">
-    <div class="panel-heading">
-        <span style="font-size: 25px">Create Role</span>
+    <div class="panel-heading text-center">
+        <h3><strong>Create Role</strong></h3>
     </div>
     <div class="panel-body">
         @using (Html.BeginForm()) 
@@ -55,7 +55,6 @@
                                     <br/>
                                     <hr/>
                                     @{
-                                        var count = Enumerable.Count(actionCategory.ControllerActions);
                                         foreach (var controllerAction in actionCategory.ControllerActions)
                                         {
                                             <span class="controller-action btn btn-default">
@@ -63,17 +62,13 @@
                                                 @controllerAction.ActionName
                                             </span>
                                             
-                                            if (--count > 0)
-                                            {
-                                                @:|
-                                            }
                                         }
                                     }
 
                                 </div>
 
                                 <br />
-                                <br />
+                                
 
                             }
                         }
@@ -81,11 +76,11 @@
 
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
+                <div class="text-center">
+                    
                         <input type="submit" value="Create" class="btn btn-success" />
-                        @Html.ActionLink("Back to List", "Index",null,new {@class = "btn btn-primary" })
-                    </div>
+                        @Html.ActionLink("Back to List", "RoleList",null,new {@class = "btn btn-primary" })
+                    
                 </div>
             </div>
         }

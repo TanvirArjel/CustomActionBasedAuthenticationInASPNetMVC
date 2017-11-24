@@ -6,9 +6,10 @@
 <br />
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <span>
-            Role List
+        <span style="font-size: 25px">
+            <strong> Role List</strong>
         </span>
+        <a class="btn btn-success pull-right" href="@Url.Action("CreateRole")">Create Role</a>
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -33,9 +34,10 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "UpdateRole", new { id=item.RoleId }) |
-                                @Html.ActionLink("Details", "RoleDetails", new { id=item.RoleId }) |
-                                @Html.ActionLink("Delete", "DeleteRole", new { id=item.RoleId })
+                                <a class="btn btn-xs btn-primary" href="@Url.Action("UpdateRole", new {id = item.RoleId})">Edit</a>
+                                <a class="btn btn-xs btn-info" href="@Url.Action("RoleDetails",new {id = item.RoleId})">Details</a>
+                                <a class="btn btn-xs btn-danger" href="@Url.Action("DeleteRole",new {id = item.RoleId})">Delete</a>
+                                
                             </td>
                         </tr>
                     }

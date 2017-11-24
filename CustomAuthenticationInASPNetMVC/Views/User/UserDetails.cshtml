@@ -1,52 +1,147 @@
-﻿@model CustomAuthenticationInASPNetMVC.Models.User
+﻿@using CustomAuthenticationInASPNetMVC.Models
+@model CustomAuthenticationInASPNetMVC.Models.User
 
 @{
     ViewBag.Title = "Details";
 }
 <br/>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <span>User Details</span>
+    <div class="panel-heading text-center">
+        <h3><strong>User Details</strong></h3>
     </div>
     <div class="panel-body">
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
+        
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.FirstName
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.LastName
+                            </div>
+                        </div>
+                        
+                    </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.UserName
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.Email
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
 
-            <dt>
-                @Html.DisplayNameFor(model => model.LastName)
-            </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
+                </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)
-            </dt>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="btn btn-default"><strong>Role Wise Permissions for this user <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></span>
+                        <br />
+                        <br />
+                        @{
+                            
+                            foreach (var role in Model.Roles)
+                            {
 
-            <dd>
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span class="role btn btn-default">
+                                            <strong>Role:</strong>
+                                            @role.RoleName
+                                        </span>
 
-            <dd>
-                @Html.DisplayFor(model => model.Email)
-            </dd>
+                                    </div>
+                                    <div class="panel-body">
+                                        @{
+                                            if (role.RoleName.Equals("SuperAdmin", StringComparison.CurrentCultureIgnoreCase))
+                                            {
+                                                <strong>He/She has all rights and permissions in this application</strong>
+                                            }
+                                            else
+                                            {
+                                                if (role.ActionCategories.Any())
+                                                {
+                                                    foreach (var actionCategory in role.ActionCategories)
+                                                    {
 
-        </dl>
-        <p>
-            <a class="btn btn-success" href="@Url.Action("UpdateUser")">Edit</a>
-            <a class="btn btn-primary" href="@Url.Action("UserList")">Back to List</a>
-        </p>
+                                                        <div style="border: 1px solid #000; padding: 10px">
+                                                            <span class="action-cateogry btn  btn-primary">
+                                                                <strong>@actionCategory.ActionCategoryName</strong>
+                                                            </span>
+                                                            <hr />
+                                                            @{
+                                                                
+                                                                foreach (var controllerAction in Model.ControllerActions.Where(x => x.ActionCategoryId == actionCategory.ActionCategoryId).ToList())
+                                                                {
 
+                                                                    <span class="controller-action btn btn-success">
+                                                                        @controllerAction.ActionName
+                                                                    </span>
+
+                                                                    
+                                                                }
+                                                            }
+
+                                                        </div>
+
+                                                        <br />
+
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <strong>No permission assigned to this role yet!</strong>
+                                                                    }
+                                                                }
+
+
+                                        }
+
+                                    </div>
+                                </div>
+                                                                }
+                        }
+
+                    </div>
+
+
+                    <br />
+
+                </div>
+
+
+
+
+                <div class="text-center">
+
+                    <a class="btn btn-success" href="@Url.Action("UpdateUser", new {id = Model.UserId})">Edit</a>
+                    <a class="btn btn-primary" href="@Url.Action("UserList")">Back to List</a>
+
+                </div>
+            </div>
+                                                                
     </div>
 </div>
 

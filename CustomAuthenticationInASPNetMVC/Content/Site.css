@@ -29,7 +29,7 @@ h1, .h1, h2, .h2, h3, .h3 {
 
 .btn {
     border-radius: 0 !important;
-    padding: 4px 12px;
+    /*padding: 4px 12px;*/
 }
 
 hr {
@@ -40,5 +40,9 @@ hr {
 }
 
 .input-group {
+    margin-bottom: 10px;
+}
+
+.controller-action {
     margin-bottom: 10px;
 }

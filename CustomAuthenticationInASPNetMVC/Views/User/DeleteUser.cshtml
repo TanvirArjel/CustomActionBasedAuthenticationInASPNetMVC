@@ -5,58 +5,143 @@
 }
 <br/>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        Delete User
+    <div class="panel-heading text-center">
+        <h3><strong>Delete User</strong></h3>
     </div>
     <div class="panel-body">
         <div class="alert alert-danger">
-            <strong>Are you sure you want to delete this?</strong>
+            <strong>Are you sure you want to delete this user?</strong>
         </div>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </dt>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.FirstName
+                            </div>
+                        </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.FirstName)
-            </dd>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.LastName
+                            </div>
+                        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.LastName)
-            </dt>
+                    </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.LastName)
-            </dd>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.UserName
+                            </div>
+                        </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.UserName)
-            </dt>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "input-group-addon" })
+                            <div class="form-control">
+                                @Model.Email
+                            </div>
+                        </div>
 
-            <dd>
-                @Html.DisplayFor(model => model.UserName)
-            </dd>
+                    </div>
+                </div>
 
-            
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="btn btn-default"><strong>Role Wise Permissions for this user <i class="fa fa-arrow-circle-down" aria-hidden="true"></i></strong></span>
+                        <br />
+                        <br />
+                        @{
 
-            <dd>
-                @Html.DisplayFor(model => model.Email)
-            </dd>
+                            foreach (var role in Model.Roles)
+                            {
 
-        </dl>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <span class="role btn btn-default">
+                                            <strong>Role:</strong>
+                                            @role.RoleName
+                                        </span>
 
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+                                    </div>
+                                    <div class="panel-body">
+                                        @{
+                                            if (role.RoleName.Equals("SuperAdmin", StringComparison.CurrentCultureIgnoreCase))
+                                            {
+                                                <strong>He/She has all rights and permissions in this application</strong>
+                                            }
+                                            else
+                                            {
+                                                if (role.ActionCategories.Any())
+                                                {
+                                                    foreach (var actionCategory in role.ActionCategories)
+                                                    {
 
-            <div class="form-actions no-color">
-                <input type="submit" value="Delete" class="btn btn-success"/>
-                <a class="btn btn-primary" href="@Url.Action("UserList")">Back to List</a>
+                                                        <div style="border: 1px solid #000; padding: 10px">
+                                                            <span class="action-cateogry btn  btn-primary">
+                                                                <strong>@actionCategory.ActionCategoryName</strong>
+                                                            </span>
+
+                                                            <hr />
+                                                            @{
+                                                                
+                                                                foreach (var controllerAction in Model.ControllerActions.Where(x => x.ActionCategoryId == actionCategory.ActionCategoryId).ToList())
+                                                                {
+
+                                                                    <span class="controller-action btn btn-success">
+                                                                        @controllerAction.ActionName
+                                                                    </span>
+
+                                                                   
+                                                                }
+                                                            }
+
+                                                        </div>
+
+                                                        <br />
+                                                        <br />
+
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <strong>No permission assigned to this role yet!</strong>
+                                                                    }
+                                                                }
+
+
+                                        }
+
+                                    </div>
+                                </div>
+                                                                }
+                        }
+
+                    </div>
+
+
+                    <br />
+
+                </div>
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color text-center">
+                            <input type="submit" value="Delete" class="btn btn-danger"/>
+                            <a class="btn btn-primary" href="@Url.Action("UserList")">Back to List</a>
+                        </div>
+                    }
             </div>
-        }
-    </div>
+
+        </div>
+    
 
 </div>

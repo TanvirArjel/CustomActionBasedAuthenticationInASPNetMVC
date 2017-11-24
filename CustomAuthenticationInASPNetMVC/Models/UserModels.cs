@@ -33,7 +33,7 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [Display(Name = "User Name")]
         [StringLength(50)]
         [Index("Ix_UserNameUnique", IsUnique = true)]
-        [Remote("IsUserNameAlreadyExists","Users", AdditionalFields = "UserId",ErrorMessage = "UserName Already Taken")]
+        [Remote("IsUserNameAlreadyExists","Validation", AdditionalFields = "UserId",ErrorMessage = "UserName Already Taken")]
         public string UserName { get; set; }
 
         [Required]
