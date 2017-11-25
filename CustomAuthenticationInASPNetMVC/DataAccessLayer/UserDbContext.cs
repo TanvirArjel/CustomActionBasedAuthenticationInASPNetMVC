@@ -17,6 +17,7 @@ namespace CustomAuthenticationInASPNetMVC.DataAccessLayer
         public DbSet<Role> Roles { get; set; }
         public DbSet<ActionCategory> ActionCategories { get; set; }
         public DbSet<ControllerAction> ControllerActions { get; set; }
+        public DbSet<UserPasswordReset> UserPasswordResets { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

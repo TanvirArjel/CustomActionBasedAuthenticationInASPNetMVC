@@ -162,7 +162,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
 
         public ActionResult LogOut()
         {
-            Session.Remove("userSession");
+            Session.Remove("LoggedInUser");
             return RedirectToAction("UserLogin", "User");
         }
 

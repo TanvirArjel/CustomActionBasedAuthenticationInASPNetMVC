@@ -172,8 +172,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="CommonCode\GetAllControllerAndActionNames.cs" />
+    <Compile Include="CommonCode\PasswordReset.cs" />
     <Compile Include="CommonCode\UserAuthorization.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\ActionController.cs" />
     <Compile Include="Controllers\ActionCategoryController.cs" />
@@ -213,10 +215,16 @@
     <Compile Include="Migrations\201709031203247_UniquenessAdded.Designer.cs">
       <DependentUpon>201709031203247_UniquenessAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711251158531_UserPasswordRestAdded.cs" />
+    <Compile Include="Migrations\201711251158531_UserPasswordRestAdded.Designer.cs">
+      <DependentUpon>201711251158531_UserPasswordRestAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\PasswordResetModels.cs" />
     <Compile Include="Models\UserModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="ViewModels\UserViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +381,11 @@
     <Content Include="Views\Action\ControllerActionList.cshtml" />
     <Content Include="Views\Security\Index.cshtml" />
     <Content Include="Views\Security\UpdateControllerAndActionNames.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\ForgotPassword.cshtml" />
+    <Content Include="Views\Manage\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Manage\ResetPassword.cshtml" />
+    <Content Include="Views\Manage\ResetPasswordConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -409,6 +422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709031203247_UniquenessAdded.resx">
       <DependentUpon>201709031203247_UniquenessAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711251158531_UserPasswordRestAdded.resx">
+      <DependentUpon>201711251158531_UserPasswordRestAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

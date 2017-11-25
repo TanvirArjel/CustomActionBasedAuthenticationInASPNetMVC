@@ -109,7 +109,7 @@
                                                             <hr />
                                                             @{
                                                                
-                                                                foreach (var controllerAction in actionCategory.ControllerActions)
+                                                                foreach (var controllerAction in role.ControllerActions.Where(x => x.ActionCategoryId == actionCategory.ActionCategoryId))
                                                                 {
                                                                     var isControllerActionChecked = Model.ControllerActions.Any(r => r.ActionId == controllerAction.ActionId);
                                                                     var buttonClassForControllerAction = "btn-default";

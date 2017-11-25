@@ -33,7 +33,16 @@
                         var loggedInuser = Session["LoggedInUser"] as User;
                         if (loggedInuser != null)
                         {
-                            <li><a href="#">Welcome! @loggedInuser.UserName</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown">Welcome! @loggedInuser.UserName
+                                    <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">My Profile</a></li>
+                                    <li><a href="@Url.Action("ChangePassword","Manage")">Change Password</a></li>
+                                    <li><a href="#">JavaScript</a></li>
+                                </ul>
+                            </li>
+                            
                             <li>@Html.ActionLink("Log Out", "LogOut", "User")</li>
                         }
                         else

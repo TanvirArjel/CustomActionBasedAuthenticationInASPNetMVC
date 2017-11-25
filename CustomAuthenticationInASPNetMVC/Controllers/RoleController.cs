@@ -46,14 +46,14 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         // POST: Roles/Create
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateRole([Bind(Include = "RoleId,RoleName,Description")] Role role, List<int> selectedActionCategories, List<int> selectedActions)
         {
             if (ModelState.IsValid)
             {
-                if (!String.Equals(role.RoleName,"SuperAdmin",StringComparison.CurrentCultureIgnoreCase))
+                if (!String.Equals(role.RoleName, "SuperAdmin", StringComparison.CurrentCultureIgnoreCase))
                 {
                     if (selectedActionCategories != null)
                     {
@@ -101,7 +101,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
         }
 
         // POST: Roles/Edit/5
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> UpdateRole(int id, Role role, List<int> selectedActionCategories, List<int> selectedActions)
@@ -113,27 +113,67 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 {
                     if (TryUpdateModel(roleToBeUpdated, "", new string[] { "RoleName", "Description" }))
                     {
-                        roleToBeUpdated.ActionCategories.Clear();
-                        roleToBeUpdated.ControllerActions.Clear();
+
                         if (!String.Equals(role.RoleName, "SuperAdmin", StringComparison.CurrentCultureIgnoreCase))
                         {
-                            if (selectedActionCategories != null)
+                            #region UpdatingRoleActionCategories
+
+                            var roleActionCategoriesHs = new HashSet<int>(roleToBeUpdated.ActionCategories.Select(x => x.ActionCategoryId).ToList());
+                            var selectedActionCategoriesHs = new HashSet<int>(selectedActionCategories);
+
+                            var roleActionCategoriesToBeDeleted = roleActionCategoriesHs.Except(selectedActionCategoriesHs).ToList();
+                            var roleActionCategoriesToBeAdded = selectedActionCategoriesHs.Except(roleActionCategoriesHs).ToList();
+
+                            List<User> roleUsers = await _dbContext.Roles.Where(x => x.RoleId == roleToBeUpdated.RoleId).Select(x => x.Users.ToList()).FirstOrDefaultAsync();
+
+                            foreach (int actionCategoryId in roleActionCategoriesToBeDeleted)
                             {
-                                foreach (var selectedActionCategory in selectedActionCategories)
+                                ActionCategory actionCategoryToBeRemoved = roleToBeUpdated.ActionCategories.FirstOrDefault(x => x.ActionCategoryId == actionCategoryId);
+                                roleToBeUpdated.ActionCategories.Remove(actionCategoryToBeRemoved);
+
+                                //Delete this action category from the users that contain this role
+                                foreach (User rolesUser in roleUsers)
                                 {
-                                    ActionCategory actionCategory = await _dbContext.ActionCategories.FindAsync(selectedActionCategory);
-                                    roleToBeUpdated.ActionCategories.Add(actionCategory);
+                                    rolesUser.ActionCategories.Remove(actionCategoryToBeRemoved);
                                 }
                             }
 
-                            if (selectedActions != null)
+                            foreach (int actionCategoryId in roleActionCategoriesToBeAdded)
                             {
-                                foreach (var selectedAction in selectedActions)
+                                ActionCategory actionCategory = await _dbContext.ActionCategories.FindAsync(actionCategoryId);
+                                roleToBeUpdated.ActionCategories.Add(actionCategory);
+                            }
+
+                            #endregion
+
+                            #region UpdatingRoleActions
+
+                            var roleActionsHs = new HashSet<int>(roleToBeUpdated.ControllerActions.Select(x => x.ActionId).ToList());
+                            var selectedActionsHs = new HashSet<int>(selectedActions);
+
+                            var roleActionsToBeDeleted = roleActionsHs.Except(selectedActionsHs).ToList();
+                            var roleActionsToBeAdded = selectedActionsHs.Except(roleActionsHs).ToList();
+
+                            foreach (int actionId in roleActionsToBeDeleted)
+                            {
+                                ControllerAction controllerActionToRemove = roleToBeUpdated.ControllerActions.FirstOrDefault(x => x.ActionId == actionId);
+                                roleToBeUpdated.ControllerActions.Remove(controllerActionToRemove);
+
+                                //Delete this actions from the users that contain this role
+
+                                foreach (User rolesUser in roleUsers)
                                 {
-                                    ControllerAction controllerAction = await _dbContext.ControllerActions.FindAsync(selectedAction);
-                                    roleToBeUpdated.ControllerActions.Add(controllerAction);
+                                    rolesUser.ControllerActions.Remove(controllerActionToRemove);
                                 }
                             }
+
+                            foreach (var actionId in roleActionsToBeAdded)
+                            {
+                                ControllerAction controllerAction = await _dbContext.ControllerActions.FindAsync(actionId);
+                                roleToBeUpdated.ControllerActions.Add(controllerAction);
+
+                            }
+                            #endregion
                         }
 
                         await _dbContext.SaveChangesAsync();
@@ -173,7 +213,7 @@ namespace CustomAuthenticationInASPNetMVC.Controllers
                 _dbContext.Roles.Remove(roleToBeDeleted);
                 await _dbContext.SaveChangesAsync();
             }
-           
+
             return RedirectToAction("RoleList");
         }
 
