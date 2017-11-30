@@ -219,6 +219,10 @@
     <Compile Include="Migrations\201711251158531_UserPasswordRestAdded.Designer.cs">
       <DependentUpon>201711251158531_UserPasswordRestAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711300939488_DesignUpdated.cs" />
+    <Compile Include="Migrations\201711300939488_DesignUpdated.Designer.cs">
+      <DependentUpon>201711300939488_DesignUpdated.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\PasswordResetModels.cs" />
     <Compile Include="Models\UserModels.cs" />
@@ -425,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711251158531_UserPasswordRestAdded.resx">
       <DependentUpon>201711251158531_UserPasswordRestAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711300939488_DesignUpdated.resx">
+      <DependentUpon>201711300939488_DesignUpdated.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

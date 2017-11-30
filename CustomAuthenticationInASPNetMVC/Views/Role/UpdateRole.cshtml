@@ -72,7 +72,7 @@
 
                                     foreach (var actionCategory in actionCategories)
                                     {
-                                        var isActionCategoryChecked = Model.ActionCategories.Any(r => r.ActionCategoryId == actionCategory.ActionCategoryId);
+                                        var isActionCategoryChecked = Model.ControllerActions.Any(r => r.ActionCategoryId == actionCategory.ActionCategoryId);
                                         var buttonClassForActionCategory = "btn-default";
                                         if (isActionCategoryChecked)
                                         {

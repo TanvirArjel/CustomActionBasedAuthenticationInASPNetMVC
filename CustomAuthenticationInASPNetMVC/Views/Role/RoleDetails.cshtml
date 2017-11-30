@@ -49,9 +49,13 @@
 
                             <div class="form-control" style="height: auto">
                                 @{
-                                    if (Model.ActionCategories.Any())
+                                    if (Model.ControllerActions.Any())
                                     {
-                                        foreach (var actionCategory in Model.ActionCategories)
+                                        foreach (var actionCategory in Model.ControllerActions.Select(x => new
+                                        {
+                                            x.ActionCategoryId,
+                                            x.ActionCategory.ActionCategoryName
+                                        }).Distinct().ToList())
                                         {
 
                                             <div style="border: 1px solid #000; padding: 10px">

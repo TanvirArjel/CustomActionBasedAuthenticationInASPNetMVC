@@ -19,7 +19,7 @@ namespace CustomAuthenticationInASPNetMVC.ViewModels
 
         [Required]
         [Display(Name = "User Name")]
-        [Remote("IsUserNameAlreadyExists","Users",ErrorMessage = "User Name Already Taken!")]
+        [Remote("IsUserNameAlreadyExists","Validation",ErrorMessage = "User Name Already Taken!")]
         public string UserName { get; set; }
 
         [Required]

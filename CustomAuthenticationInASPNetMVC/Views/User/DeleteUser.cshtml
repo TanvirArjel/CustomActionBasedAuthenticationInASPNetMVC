@@ -79,9 +79,13 @@
                                             }
                                             else
                                             {
-                                                if (role.ActionCategories.Any())
+                                                if (role.ControllerActions.Any())
                                                 {
-                                                    foreach (var actionCategory in role.ActionCategories)
+                                                    foreach (var actionCategory in role.ControllerActions.Select(x => new
+                                                    {
+                                                        x.ActionCategoryId,
+                                                        x.ActionCategory.ActionCategoryName
+                                                    }).Distinct().ToList())
                                                     {
 
                                                         <div style="border: 1px solid #000; padding: 10px">

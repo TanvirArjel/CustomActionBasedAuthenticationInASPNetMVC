@@ -13,7 +13,6 @@ namespace CustomAuthenticationInASPNetMVC.Models
         public User()
         {
             Roles = new HashSet<Role>();
-            ActionCategories = new HashSet<ActionCategory>();
             ControllerActions = new HashSet<ControllerAction>();
         }
 
@@ -45,7 +44,6 @@ namespace CustomAuthenticationInASPNetMVC.Models
         public string Email { get; set; }
 
         public virtual ICollection<Role> Roles { get; set; }
-        public virtual ICollection<ActionCategory> ActionCategories { get; set; }
         public virtual ICollection<ControllerAction> ControllerActions { get; set; }
     }
 
@@ -54,7 +52,6 @@ namespace CustomAuthenticationInASPNetMVC.Models
         public Role()
         {
             Users = new HashSet<User>();
-            ActionCategories = new HashSet<ActionCategory>();
             ControllerActions = new HashSet<ControllerAction>();
         }
 
@@ -72,7 +69,6 @@ namespace CustomAuthenticationInASPNetMVC.Models
         public string Description { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<ActionCategory> ActionCategories { get; set; }
         public virtual ICollection<ControllerAction> ControllerActions { get; set; }
     }
 
@@ -80,8 +76,6 @@ namespace CustomAuthenticationInASPNetMVC.Models
     {
         public ActionCategory()
         {
-            Users = new HashSet<User>();
-            Roles = new HashSet<Role>();
             ControllerActions = new List<ControllerAction>();
         }
         [Key]
@@ -97,12 +91,10 @@ namespace CustomAuthenticationInASPNetMVC.Models
         [Required]
         public string Description { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
-        public virtual ICollection<Role> Roles { get; set; }
         public virtual ICollection<ControllerAction> ControllerActions { get; set; }
     }
 
-    [Table("Action")]
+    [Table("ControllerActions")]
     public class ControllerAction
     {
 

@@ -95,9 +95,13 @@
                                             }
                                             else
                                             {
-                                                if (role.ActionCategories.Any())
+                                                if (role.ControllerActions.Any())
                                                 {
-                                                    foreach (var actionCategory in role.ActionCategories)
+                                                    foreach (var actionCategory in role.ControllerActions.Select(x => new
+                                                    {
+                                                        x.ActionCategoryId,
+                                                        x.ActionCategory.ActionCategoryName
+                                                    }).Distinct().ToList())
                                                     {
 
                                                         <div style="border: 1px solid #000; padding: 10px">
@@ -109,8 +113,8 @@
                                                             <br />
                                                             <hr />
                                                             @{
-                                                                var count = Enumerable.Count(actionCategory.ControllerActions);
-                                                                foreach (var controllerAction in actionCategory.ControllerActions)
+                                                                
+                                                                foreach (var controllerAction in role.ControllerActions.Where(x => x.ActionCategoryId == actionCategory.ActionCategoryId))
                                                                 {
 
                                                                     <span class="controller-action btn btn-default">
@@ -118,10 +122,7 @@
                                                                         @controllerAction.ActionName
                                                                     </span>
 
-                                                                    if (--count > 0)
-                                                                    {
-                                                                        @:|
-                                                            }
+                                                                    
                                                                 }
                                                             }
 
