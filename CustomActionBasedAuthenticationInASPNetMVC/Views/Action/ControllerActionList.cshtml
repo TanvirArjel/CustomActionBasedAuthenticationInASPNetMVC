@@ -1,0 +1,48 @@
+﻿@model IEnumerable<CustomActionBasedAuthenticationInASPNetMVC.Models.ControllerAction>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionCategory.ActionCategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionCategory.ActionCategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "UpdateControllerAction", new { id=item.ActionId }) |
+                @Html.ActionLink("Details", "ControllerActionDetails", new { id=item.ActionId }) |
+                @Html.ActionLink("Delete", "DeleteControllerAction", new { id=item.ActionId })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="text-center">
+    <a class="btn btn-primary" href="@Url.Action("Index","Security")">Back to Security</a>
+</div>
