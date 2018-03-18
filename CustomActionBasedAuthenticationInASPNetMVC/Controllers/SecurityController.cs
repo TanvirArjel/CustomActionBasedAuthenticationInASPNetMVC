@@ -51,7 +51,7 @@ namespace CustomActionBasedAuthenticationInASPNetMVC.Controllers
 
                 ActionCategory existingActionCategory = await _dbContext.ActionCategories.FirstOrDefaultAsync(x => x.ActionCategoryName == controllerName);
 
-                List<string> newActionNames = GetAllControllerAndActionNames.GetActionNamesByController2(controllerName);
+                List<string> newActionNames = GetAllControllerAndActionNames.GetActionNamesByController(controllerName);
                 HashSet<string> newActionNamesHs = new HashSet<string>(newActionNames);
 
                 
